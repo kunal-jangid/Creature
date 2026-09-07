@@ -58,19 +58,6 @@ public class TrayManager : IDisposable
         };
         menu.Items.Add(pauseItem);
 
-        var soundItem = new ToolStripMenuItem("Sound Enabled", null, (s, e) =>
-        {
-            var item = (ToolStripMenuItem)s!;
-            var settings = _settingsManager.CurrentSettings;
-            settings.IsSoundEnabled = !settings.IsSoundEnabled;
-            item.Checked = settings.IsSoundEnabled;
-            _settingsManager.Save(settings);
-        })
-        {
-            Checked = _settingsManager.CurrentSettings.IsSoundEnabled
-        };
-        menu.Items.Add(soundItem);
-
         var namesItem = new ToolStripMenuItem("Show Pet Names", null, (s, e) =>
         {
             var item = (ToolStripMenuItem)s!;
@@ -114,7 +101,12 @@ public class TrayManager : IDisposable
 
         menu.Items.Add(new ToolStripSeparator());
 
-        var addPetSubMenu = new ToolStripMenuItem("Adopt Pet");
+        var isMaxReached = _simulationEngine.Pets.Count >= 4;
+        var addPetSubMenu = new ToolStripMenuItem(isMaxReached ? "Adopt Pet (Max 4)" : "Adopt Pet")
+        {
+            Enabled = !isMaxReached
+        };
+
         string[] speciesList = ["Bunny", "Gorgon", "Werewolf"];
         foreach (var species in speciesList)
         {

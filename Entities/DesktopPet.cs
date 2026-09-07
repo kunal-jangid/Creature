@@ -18,6 +18,8 @@ public abstract class DesktopPet
 {
     public string Id { get; }
     public string Name { get; set; }
+    public double SimpnessFactor { get; set; } = 0.5;
+    public double VisualOffsetY { get; set; } = 0.0;
     public Transform2D Transform { get; } = new();
     public PhysicsBody Physics { get; }
     public Rect MonitorWorkingArea { get; set; }
@@ -105,6 +107,15 @@ public abstract class DesktopPet
 
     public void PlayAnimation(string clipName, bool loop = true)
     {
+        if (clipName == "BunnyRun")
+        {
+            VisualOffsetY = 6.0;
+        }
+        else
+        {
+            VisualOffsetY = 0.0;
+        }
+
         var clip = SpriteManager.GetClip(clipName);
         if (clip == null || clip == _currentClip)
             return;
@@ -117,6 +128,55 @@ public abstract class DesktopPet
             VisualElement.Source = _currentClip.Frames[0];
         }
     }
+
+    public virtual void HandleCursorInteraction(Point cursorVirtualPos, double dt)
+    {
+        // Don't interrupt special hover reactions (Jump/Special/Flinch) while active
+        if (CurrentStateName == "Jump" || CurrentStateName == "Special" || CurrentStateName == "Flinch")
+            return;
+
+        var petCenterX = Transform.Position.X + Transform.ScaledWidth / 2.0;
+        var petCenterY = Transform.Position.Y + Transform.ScaledHeight / 2.0;
+        var dx = cursorVirtualPos.X - petCenterX;
+        var dy = cursorVirtualPos.Y - petCenterY;
+
+        var isNear = Math.Abs(dx) <= 350.0 && Math.Abs(dy) <= 250.0;
+        if (isNear)
+        {
+            // Always face cursor when near
+            Transform.IsFacingLeft = dx < 0;
+
+            // Follow cursor if simpness factor is high
+            if (SimpnessFactor >= 0.7)
+            {
+                if (Math.Abs(dx) > 35.0)
+                {
+                    var moveRight = dx > 0;
+                    var speed = 50.0;
+                    var nextX = Transform.Position.X + (moveRight ? speed : -speed) * dt;
+
+                    if (nextX >= MonitorWorkingArea.Left && nextX + Transform.ScaledWidth <= MonitorWorkingArea.Right)
+                    {
+                        Physics.Velocity = new Vector2D(moveRight ? speed : -speed, Physics.Velocity.Y);
+                        PlayAnimation(GetRunAnimationName(), loop: true);
+                    }
+                    else
+                    {
+                        Physics.Velocity = new Vector2D(0, Physics.Velocity.Y);
+                        PlayAnimation(GetIdleAnimationName(), loop: true);
+                    }
+                }
+                else
+                {
+                    Physics.Velocity = new Vector2D(0, Physics.Velocity.Y);
+                    PlayAnimation(GetIdleAnimationName(), loop: true);
+                }
+            }
+        }
+    }
+
+    protected virtual string GetIdleAnimationName() => "BunnyLieDown";
+    protected virtual string GetRunAnimationName() => "BunnyRun";
 
     public virtual void Update(double dt)
     {
@@ -154,7 +214,7 @@ public abstract class DesktopPet
     public void SyncVisualTransform()
     {
         Canvas.SetLeft(VisualElement, Transform.Position.X);
-        Canvas.SetTop(VisualElement, Transform.Position.Y);
+        Canvas.SetTop(VisualElement, Transform.Position.Y + VisualOffsetY * Transform.Scale);
         VisualElement.Width = Transform.ScaledWidth;
         VisualElement.Height = Transform.ScaledHeight;
 

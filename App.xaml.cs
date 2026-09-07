@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using Creature.Audio;
 using Creature.Entities;
 using Creature.Entities.Bunny;
 using Creature.Entities.Gorgon;
@@ -22,7 +21,6 @@ public partial class App : System.Windows.Application
     private OverlayManager? _overlayManager;
     private SpriteManager? _spriteManager;
     private SettingsManager? _settingsManager;
-    private AudioManager? _audioManager;
     private SimulationEngine? _simulationEngine;
     private TrayManager? _trayManager;
 
@@ -31,14 +29,6 @@ public partial class App : System.Windows.Application
         base.OnStartup(e);
 
         _settingsManager = new SettingsManager();
-        _audioManager = new AudioManager { IsSoundEnabled = _settingsManager.CurrentSettings.IsSoundEnabled };
-        _settingsManager.SettingsChanged += s =>
-        {
-            if (_audioManager != null)
-            {
-                _audioManager.IsSoundEnabled = s.IsSoundEnabled;
-            }
-        };
 
         _spriteManager = new SpriteManager();
         LoadAssets();
@@ -124,6 +114,12 @@ public partial class App : System.Windows.Application
     private void AddPetWithPrompt(string species)
     {
         if (_settingsManager == null || _simulationEngine == null) return;
+
+        if (_settingsManager.CurrentSettings.Pets.Count >= 4)
+        {
+            System.Windows.MessageBox.Show("Maximum of 4 pets reached!", "Adopt Pet", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
 
         var nextIndex = _settingsManager.CurrentSettings.Pets.Count(p => p.Species.Equals(species, StringComparison.OrdinalIgnoreCase)) + 1;
         var defaultName = species.ToLowerInvariant() switch

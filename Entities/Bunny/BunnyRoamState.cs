@@ -9,7 +9,7 @@ public class BunnyRoamState : IState<DesktopPet>
 {
     private double _roamDuration;
     private double _elapsed;
-    private double _speed = 50.0;
+    private double _speed = 30.0;
     private readonly Random _random = new();
 
     public void Enter(DesktopPet pet)

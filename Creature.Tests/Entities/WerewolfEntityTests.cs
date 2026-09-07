@@ -30,9 +30,15 @@ public class WerewolfEntityTests
 
         werewolf.Name.Should().Be("Fang");
         werewolf.CurrentStateName.Should().Be("Idle");
+        werewolf.SimpnessFactor.Should().Be(0.75);
         werewolf.Transform.BaseWidth.Should().Be(64);
         werewolf.Transform.BaseHeight.Should().Be(64);
         werewolf.Transform.Position.Y.Should().Be(1080 - 64);
+
+        // Follows cursor when near (dx > 35)
+        werewolf.HandleCursorInteraction(new Point(1200, 1080 - 64), 0.016);
+        werewolf.Transform.IsFacingLeft.Should().BeFalse();
+        werewolf.Physics.Velocity.X.Should().BeGreaterThan(0);
     }
 
     [StaFact]

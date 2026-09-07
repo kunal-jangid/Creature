@@ -8,8 +8,12 @@ public class BunnyEntity : DesktopPet
     public BunnyEntity(string id, SpriteManager spriteManager, Rect monitorWorkingArea, string name = "Bunny")
         : base(id, spriteManager, monitorWorkingArea, name)
     {
+        SimpnessFactor = 0.85;
         StateMachine.ChangeState(new BunnyIdleState());
     }
+
+    protected override string GetIdleAnimationName() => "BunnyLieDown";
+    protected override string GetRunAnimationName() => "BunnyRun";
 
     public override void OnCursorHover()
     {

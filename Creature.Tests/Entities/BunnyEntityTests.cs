@@ -191,6 +191,54 @@ public class BunnyEntityTests
     }
 
     [StaFact]
+    public void BunnyEntity_SimpnessFactorAndCursorInteraction_ShouldFaceAndFollowCursor()
+    {
+        var spriteManager = CreateTestSpriteManager();
+        var bounds = new Rect(0, 0, 1920, 1080);
+        var bunny = new BunnyEntity("bunny-1", spriteManager, bounds);
+
+        bunny.SimpnessFactor.Should().Be(0.85);
+
+        // Position bunny at X=500, Y=1048
+        bunny.Transform.Position = new Vector2D(500, 1048);
+
+        // Cursor is to the right (X=700, Y=1048) - within 350px near radius
+        bunny.HandleCursorInteraction(new Point(700, 1048), 0.016);
+        bunny.Transform.IsFacingLeft.Should().BeFalse();
+        bunny.Physics.Velocity.X.Should().BeGreaterThan(0);
+
+        // Cursor is to the left (X=300, Y=1048)
+        bunny.HandleCursorInteraction(new Point(300, 1048), 0.016);
+        bunny.Transform.IsFacingLeft.Should().BeTrue();
+        bunny.Physics.Velocity.X.Should().BeLessThan(0);
+
+        // Cursor is very close (X=505) - within 35px deadzone
+        bunny.HandleCursorInteraction(new Point(505, 1048), 0.016);
+        bunny.Physics.Velocity.X.Should().Be(0);
+    }
+
+    [StaFact]
+    public void BunnyEntity_VisualOffsetY_WhenRunning_ShouldApplySixPixelGroundCorrection()
+    {
+        var spriteManager = CreateTestSpriteManager();
+        var bounds = new Rect(0, 0, 1920, 1080);
+        var bunny = new BunnyEntity("bunny-1", spriteManager, bounds);
+
+        bunny.PlayAnimation("BunnyLieDown");
+        bunny.VisualOffsetY.Should().Be(0.0);
+
+        bunny.PlayAnimation("BunnyRun");
+        bunny.VisualOffsetY.Should().Be(6.0);
+
+        bunny.Transform.Position = new Vector2D(100, 500);
+        bunny.Transform.Scale = 2.0;
+        bunny.SyncVisualTransform();
+
+        // Canvas.Top should include the 6 * 2.0 = 12 pixels offset
+        System.Windows.Controls.Canvas.GetTop(bunny.VisualElement).Should().Be(500 + 12);
+    }
+
+    [StaFact]
     public void BunnyEntity_UpdateAnimation_ShouldAdvanceFrames()
     {
         var spriteManager = CreateTestSpriteManager();

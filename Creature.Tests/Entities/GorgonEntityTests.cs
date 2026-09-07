@@ -30,9 +30,14 @@ public class GorgonEntityTests
 
         gorgon.Name.Should().Be("Medusa");
         gorgon.CurrentStateName.Should().Be("Idle");
+        gorgon.SimpnessFactor.Should().Be(0.30);
         gorgon.Transform.BaseWidth.Should().Be(64);
         gorgon.Transform.BaseHeight.Should().Be(64);
         gorgon.Transform.Position.Y.Should().Be(1080 - 64);
+
+        // Faces cursor when near (pet center is around X=960, cursor at X=800 is dx=-160)
+        gorgon.HandleCursorInteraction(new Point(800, 1080 - 64), 0.016);
+        gorgon.Transform.IsFacingLeft.Should().BeTrue();
     }
 
     [StaFact]

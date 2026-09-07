@@ -7,10 +7,22 @@ using System.Windows.Media;
 using Creature.Entities;
 using Point = System.Windows.Point;
 
+using System.Runtime.InteropServices;
+
 namespace Creature.Simulation;
 
 public class SimulationEngine
 {
+    [StructLayout(LayoutKind.Sequential)]
+    private struct POINT
+    {
+        public int X;
+        public int Y;
+    }
+
+    [DllImport("user32.dll")]
+    private static extern bool GetCursorPos(out POINT lpPoint);
+
     private readonly List<DesktopPet> _pets = new();
     private readonly Stopwatch _stopwatch = new();
     private double _lastTimestamp;
@@ -57,8 +69,18 @@ public class SimulationEngine
 
         if (!IsPaused)
         {
+            Point? cursorPoint = null;
+            if (GetCursorPos(out var pt))
+            {
+                cursorPoint = new Point(pt.X, pt.Y);
+            }
+
             foreach (var pet in _pets)
             {
+                if (cursorPoint.HasValue)
+                {
+                    pet.HandleCursorInteraction(cursorPoint.Value, dt);
+                }
                 pet.Update(dt);
             }
         }
