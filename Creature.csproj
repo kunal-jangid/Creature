@@ -9,8 +9,13 @@
     <UseWindowsForms>true</UseWindowsForms>
     <RootNamespace>Creature</RootNamespace>
     <AssemblyName>Creature</AssemblyName>
-    <DefaultItemExcludes>$(DefaultItemExcludes);Creature.Tests\**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);Creature.Tests\**;docs\**</DefaultItemExcludes>
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
