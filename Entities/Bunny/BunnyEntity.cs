@@ -5,8 +5,8 @@ namespace Creature.Entities.Bunny;
 
 public class BunnyEntity : DesktopPet
 {
-    public BunnyEntity(string id, SpriteManager spriteManager, Rect monitorWorkingArea)
-        : base(id, spriteManager, monitorWorkingArea)
+    public BunnyEntity(string id, SpriteManager spriteManager, Rect monitorWorkingArea, string name = "Bunny")
+        : base(id, spriteManager, monitorWorkingArea, name)
     {
         StateMachine.ChangeState(new BunnyIdleState());
     }

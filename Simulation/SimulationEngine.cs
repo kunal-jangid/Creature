@@ -78,4 +78,12 @@ public class SimulationEngine
             pet.SyncVisualTransform();
         }
     }
+
+    public void SetShowPetNames(bool show)
+    {
+        foreach (var pet in _pets)
+        {
+            pet.SetShowName(show);
+        }
+    }
 }

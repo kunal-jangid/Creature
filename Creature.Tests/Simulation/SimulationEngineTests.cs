@@ -96,4 +96,27 @@ public class SimulationEngineTests
         // Calling stop again when stopped should be a no-op
         actStop.Should().NotThrow();
     }
+
+    [StaFact]
+    public void SetShowPetNames_ShouldUpdateVisibilityForAllPets()
+    {
+        var sm = new SpriteManager();
+        var baseDir = Path.Combine(AppContext.BaseDirectory, "Assets");
+        sm.LoadAnimation("BunnyLieDown", Path.Combine(baseDir, "BunnyLieDown.json"), Path.Combine(baseDir, "BunnyLieDown.png"));
+
+        var bounds = new Rect(0, 0, 1920, 1080);
+        var engine = new SimulationEngine();
+        var bunny1 = new BunnyEntity("bunny-1", sm, bounds, "B1");
+        var bunny2 = new BunnyEntity("bunny-2", sm, bounds, "B2");
+        engine.AddPet(bunny1);
+        engine.AddPet(bunny2);
+
+        engine.SetShowPetNames(false);
+        bunny1.NameLabel.Visibility.Should().Be(Visibility.Collapsed);
+        bunny2.NameLabel.Visibility.Should().Be(Visibility.Collapsed);
+
+        engine.SetShowPetNames(true);
+        bunny1.NameLabel.Visibility.Should().Be(Visibility.Visible);
+        bunny2.NameLabel.Visibility.Should().Be(Visibility.Visible);
+    }
 }

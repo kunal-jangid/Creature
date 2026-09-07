@@ -17,9 +17,11 @@ public class SettingsManagerTests
             var manager = new SettingsManager(tempFile);
             var settings = manager.Load();
 
-            settings.GlobalScale.Should().Be(1.0);
+            settings.GlobalScale.Should().Be(2.0);
+            settings.ShowPetNames.Should().BeTrue();
             settings.IsSoundEnabled.Should().BeTrue();
             settings.IsPaused.Should().BeFalse();
+            settings.Pets.Should().BeEmpty();
             settings.DisabledPetIds.Should().BeEmpty();
         }
         finally
@@ -36,16 +38,21 @@ public class SettingsManagerTests
         {
             var manager = new SettingsManager(tempFile);
             var settings = manager.Load();
-            settings.GlobalScale = 1.5;
+            settings.GlobalScale = 2.5;
+            settings.ShowPetNames = false;
             settings.IsSoundEnabled = false;
             settings.IsPaused = true;
+            settings.Pets.Add(new PetProfile { Id = "bunny-1", Name = "Fluffy", Species = "Bunny" });
             settings.DisabledPetIds.Add("fox");
             manager.Save(settings);
 
             var loaded = manager.Load();
-            loaded.GlobalScale.Should().Be(1.5);
+            loaded.GlobalScale.Should().Be(2.5);
+            loaded.ShowPetNames.Should().BeFalse();
             loaded.IsSoundEnabled.Should().BeFalse();
             loaded.IsPaused.Should().BeTrue();
+            loaded.Pets.Should().HaveCount(1);
+            loaded.Pets[0].Name.Should().Be("Fluffy");
             loaded.DisabledPetIds.Should().Contain("fox");
         }
         finally

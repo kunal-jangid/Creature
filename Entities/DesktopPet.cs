@@ -7,19 +7,25 @@ using Creature.Core.Physics;
 using Creature.Core.StateMachine;
 using Creature.Graphics;
 using Point = System.Windows.Point;
+using Size = System.Windows.Size;
 using Image = System.Windows.Controls.Image;
+using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
 
 namespace Creature.Entities;
 
 public abstract class DesktopPet
 {
     public string Id { get; }
+    public string Name { get; set; }
     public Transform2D Transform { get; } = new();
     public PhysicsBody Physics { get; }
     public Rect MonitorWorkingArea { get; set; }
     public SpriteManager SpriteManager { get; }
     public StateMachine<DesktopPet> StateMachine { get; }
     public Image VisualElement { get; }
+    public FrameworkElement NameLabel { get; }
+    private readonly TextBlock _nameTextBlock;
 
     private AnimationClip? _currentClip;
     private int _currentFrameIndex;
@@ -27,9 +33,10 @@ public abstract class DesktopPet
 
     public string CurrentStateName => StateMachine.CurrentState?.GetType().Name.Replace("Bunny", "").Replace("State", "") ?? "None";
 
-    protected DesktopPet(string id, SpriteManager spriteManager, Rect monitorWorkingArea)
+    protected DesktopPet(string id, SpriteManager spriteManager, Rect monitorWorkingArea, string name = "Pet")
     {
         Id = id;
+        Name = name;
         SpriteManager = spriteManager;
         MonitorWorkingArea = monitorWorkingArea;
         Physics = new PhysicsBody(Transform);
@@ -44,9 +51,38 @@ public abstract class DesktopPet
         };
         RenderOptions.SetBitmapScalingMode(VisualElement, BitmapScalingMode.NearestNeighbor);
 
+        _nameTextBlock = new TextBlock
+        {
+            Text = Name,
+            Foreground = Brushes.White,
+            FontSize = 10,
+            FontWeight = FontWeights.SemiBold,
+            TextAlignment = TextAlignment.Center,
+            Margin = new Thickness(4, 1, 4, 1)
+        };
+
+        NameLabel = new Border
+        {
+            Background = new SolidColorBrush(Color.FromArgb(160, 0, 0, 0)),
+            CornerRadius = new CornerRadius(4),
+            Child = _nameTextBlock,
+            IsHitTestVisible = false
+        };
+
         UpdateFloor();
         Transform.Position = new Vector2D(monitorWorkingArea.Left + (monitorWorkingArea.Width - Transform.ScaledWidth) / 2, Physics.FloorY);
         SyncVisualTransform();
+    }
+
+    public void SetName(string name)
+    {
+        Name = name;
+        _nameTextBlock.Text = name;
+    }
+
+    public void SetShowName(bool show)
+    {
+        NameLabel.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
     }
 
     public void UpdateFloor()
@@ -111,6 +147,14 @@ public abstract class DesktopPet
 
         var scaleX = Transform.IsFacingLeft ? -1.0 : 1.0;
         VisualElement.RenderTransform = new ScaleTransform(scaleX, 1.0);
+
+        NameLabel.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+        var labelWidth = NameLabel.DesiredSize.Width > 0 ? NameLabel.DesiredSize.Width : 40.0;
+        var labelHeight = NameLabel.DesiredSize.Height > 0 ? NameLabel.DesiredSize.Height : 16.0;
+        var labelX = Transform.Position.X + (Transform.ScaledWidth - labelWidth) / 2.0;
+        var labelY = Transform.Position.Y - labelHeight - 2.0;
+        Canvas.SetLeft(NameLabel, labelX);
+        Canvas.SetTop(NameLabel, labelY);
     }
 
     public bool HitTest(Point point)

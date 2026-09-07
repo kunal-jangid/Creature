@@ -165,6 +165,32 @@ public class BunnyEntityTests
     }
 
     [StaFact]
+    public void BunnyEntity_NameAndNameLabel_ShouldBeProperlyInitializedAndPositioned()
+    {
+        var spriteManager = CreateTestSpriteManager();
+        var bounds = new Rect(0, 0, 1920, 1080);
+        var bunny = new BunnyEntity("bunny-1", spriteManager, bounds, name: "Snowball");
+
+        bunny.Name.Should().Be("Snowball");
+        bunny.NameLabel.Should().NotBeNull();
+        bunny.NameLabel.Visibility.Should().Be(Visibility.Visible);
+
+        bunny.Transform.Position = new Vector2D(200, 400);
+        bunny.Transform.Scale = 2.0;
+        bunny.SyncVisualTransform();
+
+        System.Windows.Controls.Canvas.GetLeft(bunny.VisualElement).Should().Be(200);
+        System.Windows.Controls.Canvas.GetTop(bunny.VisualElement).Should().Be(400);
+        System.Windows.Controls.Canvas.GetTop(bunny.NameLabel).Should().BeLessThan(400);
+
+        bunny.SetShowName(false);
+        bunny.NameLabel.Visibility.Should().Be(Visibility.Collapsed);
+
+        bunny.SetName("Cocoa");
+        bunny.Name.Should().Be("Cocoa");
+    }
+
+    [StaFact]
     public void BunnyEntity_UpdateAnimation_ShouldAdvanceFrames()
     {
         var spriteManager = CreateTestSpriteManager();
