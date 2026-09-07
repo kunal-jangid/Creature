@@ -1,0 +1,22 @@
+# yaml-language-server: =https://aka.ms/winget-manifest.defaultLocale.1.6.0.schema.json
+PackageIdentifier: KunalJangid.DesktopPets
+PackageVersion: 1.0.0
+PackageLocale: en-US
+Publisher: Kunal Jangid
+PublisherUrl: https://github.com/kunal-jangid
+PublisherSupportUrl: https://github.com/kunal-jangid/Creature/issues
+Author: Kunal Jangid
+PackageName: Desktop Pets
+PackageUrl: https://github.com/kunal-jangid/Creature
+License: Proprietary
+Copyright: Copyright (c) 2026 Kunal Jangid. All rights reserved.
+ShortDescription: Lightweight pixel-art virtual companions living on your Windows desktop.
+Description: Desktop Pets is a lightweight desktop companion application for Windows that renders animated pixel-art pets (Bunny, Gorgon, Werewolf) along the bottom of the screen with zero-friction transparent click-through and customizable pet controls.
+Tags:
+  - desktop-pet
+  - companion
+  - pixel-art
+  - virtual-pet
+  - wpf
+ManifestType: defaultLocale
+ManifestVersion: 1.6.0

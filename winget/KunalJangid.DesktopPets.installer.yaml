@@ -1,0 +1,18 @@
+# yaml-language-server: =https://aka.ms/winget-manifest.installer.1.6.0.schema.json
+PackageIdentifier: KunalJangid.DesktopPets
+PackageVersion: 1.0.0
+InstallerType: inno
+Scope: user
+InstallModes:
+  - interactive
+  - silent
+  - silentWithProgress
+UpgradeBehavior: install
+ReleaseDate: 2026-09-08
+Installers:
+  - Architecture: x64
+    InstallerUrl: https://github.com/kunal-jangid/Creature/releases/download/v1.0.0/DesktopPets-Setup-v1.0.0.exe
+    InstallerSha256: 0000000000000000000000000000000000000000000000000000000000000000
+    ProductCode: '{D37E860E-A89E-4B07-B9B2-37146522E1A9}_is1'
+ManifestType: installer
+ManifestVersion: 1.6.0
