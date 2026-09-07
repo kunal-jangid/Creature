@@ -1,5 +1,9 @@
 # 🛠️ Desktop Pets — Technical Architecture & Developer Guide
 
+**Author**: Kunal Jangid  
+**Publication**: Private Publication Application  
+**Copyright**: Copyright © 2026 Kunal Jangid. All rights reserved.
+
 This document contains deep technical specifications, design patterns, physics simulation models, Win32 interop details, and developer workflows for the **Desktop Pets** application ecosystem.
 
 ---
@@ -158,4 +162,4 @@ powershell -ExecutionPolicy Bypass -File installer/build_installer.ps1 -Version 
 Defined in [`.github/workflows/build-release.yml`](.github/workflows/build-release.yml):
 - Manually triggerable via `workflow_dispatch`.
 - Automatically computes semantic version tags (`v1.0.0` -> `v1.1.0` -> `v2.0.0`) or accepts custom version inputs.
-- Compiles, runs full test suite, generates the Inno Setup Windows Installer (`DesktopPets-Setup-vX.X.X.exe`), packages the portable zip (`DesktopPets-win-x64-vX.X.X.zip`), Authenticode-signs the binaries, and publishes both assets to GitHub Releases.
+- Compiles, runs full test suite, generates the Inno Setup Windows Installer (`DesktopPets-Setup-vX.X.X.exe`), packages the portable zip (`DesktopPets-win-x64-vX.X.X.zip`), Authenticode-signs the binaries with Kunal Jangid publisher credentials, and publishes both assets to GitHub Releases.

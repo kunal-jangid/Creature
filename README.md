@@ -12,7 +12,7 @@
 
 ## 🌟 What is Desktop Pets?
 
-**Desktop Pets** is a lightweight desktop companion app that lets cute virtual pets roam around the bottom of your screen while you work, study, or game. 
+**Desktop Pets** is a lightweight desktop companion app authored by **Kunal Jangid** that lets cute virtual pets roam around the bottom of your screen while you work, study, or game. 
 
 They won’t get in your way — you can click right through the empty screen space to click on your files, games, or apps as normal, while still being able to pet, name, and play with your companions!
 
@@ -45,7 +45,7 @@ You don’t need any programming knowledge or technical tools to use Desktop Pet
 
 ## 🛡️ Windows SmartScreen Notice
 
-Because **Desktop Pets** is an open-source project and newly released, Windows Defender SmartScreen may display an *"Unrecognized app"* prompt when you first run the installer or executable.
+Because **Desktop Pets** is a newly published application, Windows Defender SmartScreen may display an *"Unrecognized app"* prompt when you first run the installer or executable.
 
 **To run the application:**
 1. Click **More info** on the SmartScreen dialog.
@@ -85,6 +85,9 @@ Interested in the source code, architecture, physics engine, Win32 P/Invoke, or 
 
 ---
 
-## 📜 License
+## 👤 Author & Copyright
 
-Distributed under the MIT License. Free for personal and commercial use.
+**Desktop Pets** is authored and developed by **Kunal Jangid**.
+
+Copyright © 2026 Kunal Jangid. All rights reserved.
+Private Publication Application.

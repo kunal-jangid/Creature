@@ -6,7 +6,8 @@
 AppId={{D37E860E-A89E-4B07-B9B2-37146522E1A9}
 AppName=Desktop Pets
 AppVersion={#AppVersion}
-AppPublisher=Desktop Pets
+AppPublisher=Kunal Jangid
+AppCopyright=Copyright (C) 2026 Kunal Jangid. All rights reserved.
 AppPublisherURL=https://github.com/kunal-jangid/Creature
 AppSupportURL=https://github.com/kunal-jangid/Creature/issues
 AppUpdatesURL=https://github.com/kunal-jangid/Creature/releases

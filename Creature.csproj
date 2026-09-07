@@ -11,10 +11,10 @@
     <AssemblyName>DesktopPets</AssemblyName>
     <Product>Desktop Pets</Product>
     <AssemblyTitle>Desktop Pets</AssemblyTitle>
-    <Company>Desktop Pets</Company>
-    <Authors>Desktop Pets</Authors>
+    <Company>Kunal Jangid</Company>
+    <Authors>Kunal Jangid</Authors>
     <Description>Desktop Pets - Interactive pixel-art desktop companions for Windows</Description>
-    <Copyright>Copyright © 2026</Copyright>
+    <Copyright>Copyright © 2026 Kunal Jangid. All rights reserved.</Copyright>
     <DefaultItemExcludes>$(DefaultItemExcludes);Creature.Tests\**;docs\**</DefaultItemExcludes>
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
   </PropertyGroup>
