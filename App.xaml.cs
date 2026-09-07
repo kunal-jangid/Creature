@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using Creature.Entities;
 using Creature.Entities.Bunny;
@@ -18,6 +19,7 @@ namespace Creature;
 
 public partial class App : System.Windows.Application
 {
+    private static Mutex? _singleInstanceMutex;
     private MonitorManager? _monitorManager;
     private OverlayManager? _overlayManager;
     private SpriteManager? _spriteManager;
@@ -27,6 +29,17 @@ public partial class App : System.Windows.Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        const string mutexName = "Creature_SingleInstance_App_Mutex_2026";
+        _singleInstanceMutex = new Mutex(true, mutexName, out bool isNewInstance);
+
+        if (!isNewInstance)
+        {
+            // Another instance of Creature is already running.
+            // Terminate duplicate process to keep a single tray menu and unified overlay.
+            Shutdown();
+            return;
+        }
+
         base.OnStartup(e);
 
         _settingsManager = new SettingsManager();
@@ -225,6 +238,17 @@ public partial class App : System.Windows.Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        if (_singleInstanceMutex != null)
+        {
+            try
+            {
+                _singleInstanceMutex.ReleaseMutex();
+            }
+            catch { }
+            _singleInstanceMutex.Dispose();
+            _singleInstanceMutex = null;
+        }
+
         _simulationEngine?.Stop();
         _trayManager?.Dispose();
         _overlayManager?.Dispose();

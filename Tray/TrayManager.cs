@@ -42,7 +42,9 @@ public class TrayManager : IDisposable
 
     public void RefreshPetMenu()
     {
+        var oldMenu = _notifyIcon.ContextMenuStrip;
         _notifyIcon.ContextMenuStrip = BuildContextMenu();
+        oldMenu?.Dispose();
     }
 
     private ContextMenuStrip BuildContextMenu()
