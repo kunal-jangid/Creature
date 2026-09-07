@@ -4,7 +4,7 @@ param (
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "==> Publishing Creature Standalone Binary..." -ForegroundColor Cyan
+Write-Host "==> Publishing Desktop Pets Standalone Binary..." -ForegroundColor Cyan
 dotnet publish "$PSScriptRoot\..\Creature.csproj" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:Version=$Version -o "$PSScriptRoot\..\publish"
 
 # Search for Inno Setup compiler
@@ -39,7 +39,7 @@ Write-Host "==> Compiling Windows Setup Installer with Inno Setup..." -Foregroun
 & $iscc "/dAppVersion=$Version" "$PSScriptRoot\creature_setup.iss"
 
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "`n[SUCCESS] Windows Installer created successfully at: dist\Creature-Setup-v$Version.exe" -ForegroundColor Green
+    Write-Host "`n[SUCCESS] Windows Installer created successfully at: dist\DesktopPets-Setup-v$Version.exe" -ForegroundColor Green
 } else {
     Write-Error "Inno Setup compilation failed with exit code $LASTEXITCODE"
 }

@@ -1,7 +1,7 @@
-# Creature 🐾
+# Desktop Pets 🐾
 
 <p align="center">
-  <img src="Assets/app.png" alt="Creature App Logo" width="128" height="128" />
+  <img src="Assets/app.png" alt="Desktop Pets App Logo" width="128" height="128" />
 </p>
 
 <p align="center">
@@ -10,9 +10,9 @@
 
 ---
 
-## 🌟 What is Creature?
+## 🌟 What is Desktop Pets?
 
-**Creature** is a lightweight desktop companion app that lets cute virtual pets roam around the bottom of your screen while you work, study, or game. 
+**Desktop Pets** is a lightweight desktop companion app that lets cute virtual pets roam around the bottom of your screen while you work, study, or game. 
 
 They won’t get in your way — you can click right through the empty screen space to click on your files, games, or apps as normal, while still being able to pet, name, and play with your companions!
 
@@ -28,26 +28,34 @@ They won’t get in your way — you can click right through the empty screen sp
 
 ## 🚀 How to Download & Install
 
-You don’t need any programming knowledge or technical tools to use Creature!
+You don’t need any programming knowledge or technical tools to use Desktop Pets!
 
 ### Option 1: 1-Click Windows Installer (Recommended)
 1. Go to the **[Releases](https://github.com/kunal-jangid/Creature/releases)** page.
-2. Download **`Creature-Setup-vX.X.X.exe`**.
+2. Download **`DesktopPets-Setup-vX.X.X.exe`**.
 3. Run the installer and follow the quick setup wizard.
-4. Creature will install, create desktop/start menu shortcuts, and launch automatically! 🎉
+4. Desktop Pets will install, create desktop/start menu shortcuts, and launch automatically! 🎉
 
 ### Option 2: Portable ZIP
-1. Download **`Creature-win-x64-vX.X.X.zip`** from the **[Releases](https://github.com/kunal-jangid/Creature/releases)** page.
+1. Download **`DesktopPets-win-x64-vX.X.X.zip`** from the **[Releases](https://github.com/kunal-jangid/Creature/releases)** page.
 2. Extract the zip file to any folder you prefer.
-3. Double-click **`Creature.exe`** to run directly without installing.
+3. Double-click **`DesktopPets.exe`** to run directly without installing.
 
-> **Tip:** If Windows displays a *"Windows protected your PC"* prompt on first launch, click **More info** and then select **Run anyway**.
+---
+
+## 🛡️ Windows SmartScreen Notice
+
+Because **Desktop Pets** is an open-source project and newly released, Windows Defender SmartScreen may display an *"Unrecognized app"* prompt when you first run the installer or executable.
+
+**To run the application:**
+1. Click **More info** on the SmartScreen dialog.
+2. Click **Run anyway**.
 
 ---
 
 ## 🕹️ Controls & How to Use
 
-Creature runs quietly in your **System Tray** (near the clock in the bottom-right corner of your taskbar).
+Desktop Pets runs quietly in your **System Tray** (near the clock in the bottom-right corner of your taskbar).
 
 ### 🖱️ Right-Click the Tray Icon to:
 - ➕ **Adopt Pet**: Add up to 4 pets on your screen at the same time (mix and match any combination of Bunnies, Gorgons, or Werewolves!).

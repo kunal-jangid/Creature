@@ -34,7 +34,7 @@ public class TrayManager : IDisposable
         _notifyIcon = new NotifyIcon
         {
             Icon = icon,
-            Text = "Desktop Pets (Creature)",
+            Text = "Desktop Pets",
             Visible = true,
             ContextMenuStrip = BuildContextMenu()
         };

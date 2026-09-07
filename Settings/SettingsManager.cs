@@ -15,9 +15,32 @@ public class SettingsManager
     {
         _filePath = customPath ?? Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "Creature",
+            "DesktopPets",
             "settings.json"
         );
+
+        if (customPath == null && !File.Exists(_filePath))
+        {
+            var legacyPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Creature",
+                "settings.json"
+            );
+            if (File.Exists(legacyPath))
+            {
+                try
+                {
+                    var dir = Path.GetDirectoryName(_filePath);
+                    if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
+                    File.Copy(legacyPath, _filePath, true);
+                }
+                catch { }
+            }
+        }
+
         CurrentSettings = Load();
     }
 

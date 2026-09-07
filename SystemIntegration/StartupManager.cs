@@ -7,7 +7,7 @@ namespace Creature.SystemIntegration;
 public static class StartupManager
 {
     private const string RunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
-    private const string AppName = "Creature";
+    private const string AppName = "Desktop Pets";
 
     public static bool SetStartup(bool enable, string? customExePath = null)
     {
@@ -32,6 +32,8 @@ public static class StartupManager
                     if (key == null) return false;
 
                     key.SetValue(AppName, $"\"{exePath}\"");
+                    // Clean up legacy key if present
+                    key.DeleteValue("Creature", throwOnMissingValue: false);
                     return true;
                 }
                 return false;
@@ -40,6 +42,7 @@ public static class StartupManager
             {
                 using var key = Registry.CurrentUser.CreateSubKey(RunKeyPath);
                 key?.DeleteValue(AppName, throwOnMissingValue: false);
+                key?.DeleteValue("Creature", throwOnMissingValue: false);
                 return true;
             }
         }
@@ -54,7 +57,7 @@ public static class StartupManager
         try
         {
             using var key = Registry.CurrentUser.OpenSubKey(RunKeyPath, writable: false);
-            return key?.GetValue(AppName) != null;
+            return key?.GetValue(AppName) != null || key?.GetValue("Creature") != null;
         }
         catch
         {

@@ -29,7 +29,7 @@ public partial class App : System.Windows.Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        const string mutexName = "Creature_SingleInstance_App_Mutex_2026";
+        const string mutexName = "DesktopPets_SingleInstance_App_Mutex_2026";
         _singleInstanceMutex = new Mutex(true, mutexName, out bool isNewInstance);
 
         if (!isNewInstance)
