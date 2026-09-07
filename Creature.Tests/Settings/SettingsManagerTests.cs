@@ -19,6 +19,7 @@ public class SettingsManagerTests
 
             settings.GlobalScale.Should().Be(2.0);
             settings.ShowPetNames.Should().BeTrue();
+            settings.StartWithWindows.Should().BeFalse();
             settings.IsPaused.Should().BeFalse();
             settings.Pets.Should().BeEmpty();
             settings.DisabledPetIds.Should().BeEmpty();
@@ -39,6 +40,7 @@ public class SettingsManagerTests
             var settings = manager.Load();
             settings.GlobalScale = 2.5;
             settings.ShowPetNames = false;
+            settings.StartWithWindows = true;
             settings.IsPaused = true;
             settings.Pets.Add(new PetProfile { Id = "bunny-1", Name = "Fluffy", Species = "Bunny" });
             settings.DisabledPetIds.Add("fox");
@@ -47,6 +49,7 @@ public class SettingsManagerTests
             var loaded = manager.Load();
             loaded.GlobalScale.Should().Be(2.5);
             loaded.ShowPetNames.Should().BeFalse();
+            loaded.StartWithWindows.Should().BeTrue();
             loaded.IsPaused.Should().BeTrue();
             loaded.Pets.Should().HaveCount(1);
             loaded.Pets[0].Name.Should().Be("Fluffy");

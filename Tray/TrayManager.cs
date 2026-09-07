@@ -1,10 +1,12 @@
 using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Creature.Entities;
 using Creature.Settings;
 using Creature.Simulation;
+using Creature.SystemIntegration;
 
 namespace Creature.Tray;
 
@@ -26,9 +28,12 @@ public class TrayManager : IDisposable
         _simulationEngine = simulationEngine;
         _onExit = onExit;
 
+        var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "app.ico");
+        Icon icon = File.Exists(iconPath) ? new Icon(iconPath) : SystemIcons.Application;
+
         _notifyIcon = new NotifyIcon
         {
-            Icon = SystemIcons.Application,
+            Icon = icon,
             Text = "Desktop Pets (Creature)",
             Visible = true,
             ContextMenuStrip = BuildContextMenu()
@@ -71,6 +76,20 @@ public class TrayManager : IDisposable
             Checked = _settingsManager.CurrentSettings.ShowPetNames
         };
         menu.Items.Add(namesItem);
+
+        var startWithWindowsItem = new ToolStripMenuItem("Start with Windows", null, (s, e) =>
+        {
+            var item = (ToolStripMenuItem)s!;
+            var settings = _settingsManager.CurrentSettings;
+            settings.StartWithWindows = !settings.StartWithWindows;
+            item.Checked = settings.StartWithWindows;
+            StartupManager.SetStartup(settings.StartWithWindows);
+            _settingsManager.Save(settings);
+        })
+        {
+            Checked = _settingsManager.CurrentSettings.StartWithWindows
+        };
+        menu.Items.Add(startWithWindowsItem);
 
         var scaleSubMenu = new ToolStripMenuItem("Global Pet Size");
         (double scale, string label)[] scales = [

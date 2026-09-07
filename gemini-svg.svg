@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="256" height="256">
+  <!-- Background transparent -->
+  
+  <!-- Outer Outline (Dark Grey/Black) -->
+  <path fill="#2D2D2D" d="
+    M4,1 h2 v4 h-2 z
+    M10,1 h2 v4 h-2 z
+    M3,2 h1 v3 h-1 z
+    M12,2 h1 v3 h-1 z
+    M4,5 h1 v1 h-1 z
+    M11,5 h1 v1 h-1 z
+    M3,6 h10 v1 h-10 z
+    M2,7 h12 v6 h-12 z
+    M3,13 h10 v1 h-10 z
+    M4,14 h8 v1 h-8 z
+  "/>
+
+  <!-- Bunny Base Color (White) -->
+  <path fill="#FFFFFF" d="
+    M5,2 h1 v4 h-1 z
+    M10,2 h1 v4 h-1 z
+    M4,6 h8 v1 h-8 z
+    M3,7 h10 v6 h-10 z
+    M4,13 h8 v1 h-8 z
+  "/>
+
+  <!-- Inner Ear Detail (Pink) -->
+  <path fill="#FF9EBB" d="
+    M5,3 h1 v3 h-1 z
+    M10,3 h1 v3 h-1 z
+  "/>
+
+  <!-- Eyes (Black) -->
+  <rect fill="#1A1A1A" x="4" y="8" width="2" height="2" />
+  <rect fill="#1A1A1A" x="10" y="8" width="2" height="2" />
+
+  <!-- Nose (Pink) -->
+  <rect fill="#FF9EBB" x="7" y="10" width="2" height="1" />
+
+  <!-- Snout/Cheeks (Light Grey shading) -->
+  <rect fill="#E0E0E0" x="6" y="11" width="1" height="1" />
+  <rect fill="#E0E0E0" x="9" y="11" width="1" height="1" />
+  <rect fill="#E0E0E0" x="7" y="12" width="2" height="1" />
+</svg>

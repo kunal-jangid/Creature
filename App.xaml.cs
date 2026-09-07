@@ -9,6 +9,7 @@ using Creature.Entities.Werewolf;
 using Creature.Graphics;
 using Creature.Settings;
 using Creature.Simulation;
+using Creature.SystemIntegration;
 using Creature.Tray;
 using Creature.UI;
 using Creature.Windowing;
@@ -29,6 +30,7 @@ public partial class App : System.Windows.Application
         base.OnStartup(e);
 
         _settingsManager = new SettingsManager();
+        StartupManager.SetStartup(_settingsManager.CurrentSettings.StartWithWindows);
 
         _spriteManager = new SpriteManager();
         LoadAssets();
@@ -195,11 +197,7 @@ public partial class App : System.Windows.Application
 
     private void LoadAssets()
     {
-        var baseDir = Path.Combine(AppContext.BaseDirectory, "docs", "assets");
-        if (!Directory.Exists(baseDir))
-        {
-            baseDir = Path.Combine(AppContext.BaseDirectory, "Assets");
-        }
+        var baseDir = Path.Combine(AppContext.BaseDirectory, "Assets");
 
         // Bunny
         _spriteManager!.LoadAnimation("BunnyLieDown", Path.Combine(baseDir, "BunnyLieDown.json"), Path.Combine(baseDir, "BunnyLieDown.png"));

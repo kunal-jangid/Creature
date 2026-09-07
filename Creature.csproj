@@ -10,10 +10,11 @@
     <RootNamespace>Creature</RootNamespace>
     <AssemblyName>Creature</AssemblyName>
     <DefaultItemExcludes>$(DefaultItemExcludes);Creature.Tests\**</DefaultItemExcludes>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="docs\assets\**\*.*">
+    <Content Include="Assets\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
