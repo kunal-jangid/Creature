@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Creature.csproj" />
+  <Project Path="Creature.Tests/Creature.Tests.csproj" />
+</Solution>
