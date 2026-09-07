@@ -1,4 +1,4 @@
-﻿name: Build & Release
+name: Build & Release
 
 on:
   workflow_dispatch:
@@ -69,12 +69,22 @@ jobs:
           Compress-Archive -Path ./publish/* -DestinationPath "./$zipName"
           "ZIP_NAME=$zipName" | Out-File -FilePath $env:GITHUB_ENV -Append
 
-      - name: Create GitHub Release & Upload Asset
+      - name: Build Windows Setup Installer (Inno Setup)
+        shell: pwsh
+        run: |
+          $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) {
+              $iscc = "ISCC.exe"
+          }
+          & $iscc "/dAppVersion=${{ env.VERSION }}" "installer\creature_setup.iss"
+          $installerPath = "dist\Creature-Setup-v${{ env.VERSION }}.exe"
+          "INSTALLER_PATH=$installerPath" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Create GitHub Release & Upload Assets
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
         run: |
           git tag ${{ env.TAG_NAME }}
           git push origin ${{ env.TAG_NAME }}
-          gh release create ${{ env.TAG_NAME }} "./${{ env.ZIP_NAME }}" --title "Creature ${{ env.TAG_NAME }}" --generate-notes
-
+          gh release create ${{ env.TAG_NAME }} "./${{ env.ZIP_NAME }}" "${{ env.INSTALLER_PATH }}" --title "Creature ${{ env.TAG_NAME }}" --generate-notes

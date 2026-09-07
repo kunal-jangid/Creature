@@ -30,13 +30,18 @@ They won’t get in your way — you can click right through the empty screen sp
 
 You don’t need any programming knowledge or technical tools to use Creature!
 
+### Option 1: 1-Click Windows Installer (Recommended)
 1. Go to the **[Releases](https://github.com/kunal-jangid/Creature/releases)** page.
-2. Download the latest Creature-win-x64-vX.X.X.zip file.
-3. **Extract** the zip file into any folder you like (for example, in your Documents or Program Files folder).
-4. Double-click **Creature.exe** to start the app.
-5. Your pet will instantly pop up on the bottom of your screen! 🎉
+2. Download **`Creature-Setup-vX.X.X.exe`**.
+3. Run the installer and follow the quick setup wizard.
+4. Creature will install, create desktop/start menu shortcuts, and launch automatically! 🎉
 
-> **Tip:** If Windows shows a *"Windows protected your PC"* popup on first run, click **More info** and then select **Run anyway**.
+### Option 2: Portable ZIP
+1. Download **`Creature-win-x64-vX.X.X.zip`** from the **[Releases](https://github.com/kunal-jangid/Creature/releases)** page.
+2. Extract the zip file to any folder you prefer.
+3. Double-click **`Creature.exe`** to run directly without installing.
+
+> **Tip:** If Windows displays a *"Windows protected your PC"* prompt on first launch, click **More info** and then select **Run anyway**.
 
 ---
 
