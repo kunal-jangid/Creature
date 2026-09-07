@@ -1,0 +1,80 @@
+﻿name: Build & Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release Version (e.g. 1.1, 2.0). Leave empty to auto-increment from previous release"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine Version
+        id: versioning
+        shell: pwsh
+        run: |
+          $inputVer = "${{ github.event.inputs.version }}".Trim()
+          if (-not [string]::IsNullOrWhiteSpace($inputVer)) {
+              $cleanVer = $inputVer.TrimStart("v", "V")
+              $tagVer = "v$cleanVer"
+          } else {
+              $latestTag = $(git tag -l "v*" --sort=-v:refname | Select-Object -First 1)
+              if ([string]::IsNullOrWhiteSpace($latestTag)) {
+                  $cleanVer = "1.0.0"
+                  $tagVer = "v1.0.0"
+              } else {
+                  $numVer = $latestTag.TrimStart("v", "V")
+                  $parts = $numVer.Split(".")
+                  $major = if ($parts.Length -gt 0) { [int]$parts[0] } else { 1 }
+                  $minor = if ($parts.Length -gt 1) { [int]$parts[1] } else { 0 }
+                  $patch = if ($parts.Length -gt 2) { [int]$parts[2] } else { 0 }
+                  
+                  $minor++
+                  $cleanVer = "$major.$minor.0"
+                  $tagVer = "v$cleanVer"
+              }
+          }
+          Write-Host "Determined Release Version: $cleanVer ($tagVer)"
+          "VERSION=$cleanVer" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "TAG_NAME=$tagVer" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Run Tests
+        run: dotnet test --configuration Release --verbosity normal
+
+      - name: Publish Standalone Executable
+        run: |
+          dotnet publish Creature.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:Version=${{ env.VERSION }} -o ./publish
+
+      - name: Package Release ZIP
+        shell: pwsh
+        run: |
+          $zipName = "Creature-win-x64-${{ env.TAG_NAME }}.zip"
+          Compress-Archive -Path ./publish/* -DestinationPath "./$zipName"
+          "ZIP_NAME=$zipName" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Create GitHub Release & Upload Asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: pwsh
+        run: |
+          git tag ${{ env.TAG_NAME }}
+          git push origin ${{ env.TAG_NAME }}
+          gh release create ${{ env.TAG_NAME }} "./${{ env.ZIP_NAME }}" --title "Creature ${{ env.TAG_NAME }}" --generate-notes
+

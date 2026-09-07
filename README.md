@@ -1,80 +1,77 @@
+# Creature 🐾
+
 <p align="center">
   <img src="Assets/app.png" alt="Creature App Logo" width="128" height="128" />
 </p>
 
-<h1 align="center">Creature - Desktop Pets</h1>
-
 <p align="center">
-  <b>A lightweight, zero-friction, multi-pet desktop companion for Windows built with .NET 10 & WPF.</b>
+  <b>Adorable, interactive pixel-art pets living right on your Windows desktop!</b>
 </p>
 
 ---
 
-## ? Features
+## 🌟 What is Creature?
 
-- ?? **Multiple Pet Species & Custom Names**
-  - **Bunny**: Hops and roams gracefully along the floor.
-  - **Gorgon**: Slithers, idles, and casts stone stares.
-  - **Werewolf**: Wanders the desktop and performs agile jumps and flinches.
-  - Supports up to 4 simultaneous desktop pets with customizable hover name labels.
+**Creature** is a lightweight desktop companion app that lets cute virtual pets roam around the bottom of your screen while you work, study, or game. 
 
-- ?? **Simpness Factor & Intelligent Cursor Interaction**
-  - Unique cursor attraction dynamics per species.
-  - Pets naturally face your cursor when nearby and dynamically choose whether to follow or mind their own business.
-  - Interactive cursor hover triggers playful state transitions.
-
-- ??? **Multi-Monitor Transparent Overlay with Zero Click Friction**
-  - Native Win32 `WM_NCHITTEST` hit-test routing ensures that empty canvas areas return `HTTRANSPARENT` (-1), letting all mouse clicks pass straight through to your desktop, IDE, or games.
-  - Only the bounding boxes of your pets interact with the cursor.
-
-- ?? **Pixel-Perfect Scaling**
-  - Native `NearestNeighbor` interpolation ensures crisp, high-quality pixel art at any scale (1.0x, 1.5x, 2.0x Default, 2.5x, 3.0x, 4.0x).
-
-- ?? **Local Storage & Boot Persistence**
-  - All pet configurations, custom names, active pets, and scaling presets are automatically stored in `%APPDATA%\Creature\settings.json`.
-  - Seamless "Start with Windows" support so your pets greet you right upon boot.
-
-- ??? **System Tray Controls**
-  - Right-click the tray icon to pause/resume simulation, toggle pet names, change pet sizes, adopt/rename/remove pets, and configure startup behavior.
+They won’t get in your way — you can click right through the empty screen space to click on your files, games, or apps as normal, while still being able to pet, name, and play with your companions!
 
 ---
 
-## ??? Architecture & Tech Stack
+## 🐶 Meet the Pets
 
-- **Framework**: .NET 10.0 (`net10.0-windows`)
-- **UI & Graphics**: WPF (Windows Presentation Foundation) with direct `CroppedBitmap` frame slicing from Aseprite JSON metadata.
-- **Windowing & Interop**: Win32 P/Invoke (`User32.dll`) transparent overlays with `WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE | WS_EX_TRANSPARENT`.
-- **Game Loop**: Low CPU `CompositionTarget.Rendering` ~60Hz simulation loop with delta-time clamping and zero garbage collection churn.
-- **Testing**: Comprehensive xUnit + FluentAssertions STA test suite.
+- 🐰 **Bunny**: A tiny, playful rabbit that loves hopping across your taskbar and jumping whenever you tickle it with your mouse.
+- 🐍 **Gorgon**: A calm, mythical companion with flowing serpent hair who occasionally casts its enchanting gaze.
+- 🐺 **Werewolf**: An energetic wolf that patrols your desktop, leaps around, and loves following your cursor.
 
 ---
 
-## ?? Getting Started
+## 🚀 How to Download & Install
 
-### Prerequisites
-- [Windows 10 / 11](https://www.microsoft.com/windows)
-- [.NET 10 SDK](https://dotnet.microsoft.com/download)
+You don’t need any programming knowledge or technical tools to use Creature!
 
-### Building and Running
-```bash
-# Clone the repository
-git clone https://github.com/kunal-jangid/Creature.git
-cd Creature
+1. Go to the **[Releases](https://github.com/kunal-jangid/Creature/releases)** page.
+2. Download the latest Creature-win-x64-vX.X.X.zip file.
+3. **Extract** the zip file into any folder you like (for example, in your Documents or Program Files folder).
+4. Double-click **Creature.exe** to start the app.
+5. Your pet will instantly pop up on the bottom of your screen! 🎉
 
-# Run unit tests
-dotnet test
-
-# Build and run
-dotnet run --project Creature.csproj
-```
-
-### Publishing Standalone Binary
-```bash
-dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
-```
+> **Tip:** If Windows shows a *"Windows protected your PC"* popup on first run, click **More info** and then select **Run anyway**.
 
 ---
 
-## ?? License
-MIT License. Free for personal and commercial use.
+## 🕹️ Controls & How to Use
 
+Creature runs quietly in your **System Tray** (near the clock in the bottom-right corner of your taskbar).
+
+### 🖱️ Right-Click the Tray Icon to:
+- ➕ **Adopt Pet**: Add up to 4 pets on your screen at the same time (mix and match any combination of Bunnies, Gorgons, or Werewolves!).
+- 🏷️ **Name & Rename Pets**: Give each of your pets their own custom name (like *"Fluffy"*, *"Luna"*, or *"Shadow"*).
+- 👁️ **Show / Hide Names**: Toggle floating name tags above your pets on or off.
+- 📏 **Change Size**: Scale your pets from Small (1.0x), Medium (1.5x), Default (2.0x), up to Huge (4.0x).
+- ⏸️ **Pause Simulation**: Freeze your pets in place whenever you need complete stillness.
+- 💻 **Start with Windows**: Check this option so your pets automatically greet you every time you turn on your computer!
+- ❌ **Remove Pet / Exit**: Remove specific pets or close the application.
+
+---
+
+## 💡 Key Highlights
+
+- **Zero-Friction Click-Through**: You can click on whatever is behind the screen without pets stealing your mouse focus.
+- **Remembers Everything**: Your pet names, sizes, and active pets are saved automatically across reboots.
+- **Ultra Lightweight**: Uses practically 0% CPU and very little memory.
+- **Multi-Monitor Friendly**: Pets respect your screen boundaries across all connected displays.
+
+---
+
+## 🛠️ For Developers
+
+Interested in the source code, architecture, physics engine, Win32 P/Invoke, or building from source?
+
+👉 **Check out the [Technical Architecture & Developer Guide (Technical-Readme.md)](Technical-Readme.md)**.
+
+---
+
+## 📜 License
+
+Distributed under the MIT License. Free for personal and commercial use.
