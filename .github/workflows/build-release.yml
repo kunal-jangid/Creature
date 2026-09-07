@@ -62,12 +62,15 @@ jobs:
         run: |
           dotnet publish Creature.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:Version=${{ env.VERSION }} -o ./publish
 
-      - name: Code-Sign Standalone Binary
+      - name: Create Code Signing Certificate & Sign Binary
         shell: pwsh
         run: |
-          $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=Kunal Jangid" -CertStoreLocation "Cert:\CurrentUser\My"
+          $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=Kunal Jangid" -CertStoreLocation "Cert:\CurrentUser\My" -FriendlyName "Kunal Jangid Desktop Pets"
           Set-AuthenticodeSignature -FilePath "./publish/DesktopPets.exe" -Certificate $cert -TimestampServer "http://timestamp.digicert.com"
-          "CERT_THUMBPRINT=$($cert.Thumbprint)" | Out-File -FilePath $env:GITHUB_ENV -Append
+          
+          # Export public cert for release
+          New-Item -ItemType Directory -Force -Path "dist"
+          Export-Certificate -Cert $cert -FilePath "dist\KunalJangid.cer"
 
       - name: Package Release ZIP
         shell: pwsh
@@ -87,9 +90,9 @@ jobs:
           $installerPath = "dist\DesktopPets-Setup-v${{ env.VERSION }}.exe"
           
           # Sign installer
-          $cert = Get-Item "Cert:\CurrentUser\My\${{ env.CERT_THUMBPRINT }}" -ErrorAction SilentlyContinue
-          if ($cert) {
-              Set-AuthenticodeSignature -FilePath $installerPath -Certificate $cert -TimestampServer "http://timestamp.digicert.com"
+          $certs = Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Subject -like "*Kunal Jangid*" }
+          if ($certs) {
+              Set-AuthenticodeSignature -FilePath $installerPath -Certificate $certs[0] -TimestampServer "http://timestamp.digicert.com"
           }
           
           "INSTALLER_PATH=$installerPath" | Out-File -FilePath $env:GITHUB_ENV -Append
@@ -101,4 +104,4 @@ jobs:
         run: |
           git tag ${{ env.TAG_NAME }}
           git push origin ${{ env.TAG_NAME }}
-          gh release create ${{ env.TAG_NAME }} "./${{ env.ZIP_NAME }}" "${{ env.INSTALLER_PATH }}" --title "Desktop Pets ${{ env.TAG_NAME }}" --generate-notes
+          gh release create ${{ env.TAG_NAME }} "./${{ env.ZIP_NAME }}" "${{ env.INSTALLER_PATH }}" "dist/KunalJangid.cer" --title "Desktop Pets ${{ env.TAG_NAME }}" --generate-notes

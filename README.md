@@ -43,13 +43,19 @@ You don’t need any programming knowledge or technical tools to use Desktop Pet
 
 ---
 
-## 🛡️ Windows SmartScreen Notice
+## 🛡️ Windows SmartScreen & Publisher Notice
 
-Because **Desktop Pets** is a newly published application, Windows Defender SmartScreen may display an *"Unrecognized app"* prompt when you first run the installer or executable.
+Because **Desktop Pets** is a newly published application without an enterprise commercial certificate, Windows Defender SmartScreen may display an *"Unrecognized app / Unknown publisher"* prompt on first launch.
 
-**To run the application:**
-1. Click **More info** on the SmartScreen dialog.
+### Quick Start:
+1. Click **More info** on the popup.
 2. Click **Run anyway**.
+
+### (Optional) Trust the Author Certificate Permanently:
+1. Download **`KunalJangid.cer`** from the [Releases](https://github.com/kunal-jangid/Creature/releases) page.
+2. Double-click **`KunalJangid.cer`** $\rightarrow$ Click **Install Certificate...**
+3. Select **Current User** $\rightarrow$ Choose **Place all certificates in the following store** $\rightarrow$ Browse and select **Trusted Root Certification Authorities**.
+4. Click **Finish**. Windows will now permanently recognize **Publisher: Kunal Jangid**.
 
 ---
 
