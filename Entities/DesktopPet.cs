@@ -31,14 +31,27 @@ public abstract class DesktopPet
     private int _currentFrameIndex;
     private double _frameTimer;
 
-    public string CurrentStateName => StateMachine.CurrentState?.GetType().Name.Replace("Bunny", "").Replace("State", "") ?? "None";
+    public string CurrentStateName
+    {
+        get
+        {
+            if (StateMachine.CurrentState == null) return "None";
+            var name = StateMachine.CurrentState.GetType().Name;
+            if (name.EndsWith("State")) name = name[..^5];
+            var species = GetType().Name.Replace("Entity", "");
+            if (name.StartsWith(species)) name = name[species.Length..];
+            return name;
+        }
+    }
 
-    protected DesktopPet(string id, SpriteManager spriteManager, Rect monitorWorkingArea, string name = "Pet")
+    protected DesktopPet(string id, SpriteManager spriteManager, Rect monitorWorkingArea, string name = "Pet", double baseWidth = 32, double baseHeight = 32)
     {
         Id = id;
         Name = name;
         SpriteManager = spriteManager;
         MonitorWorkingArea = monitorWorkingArea;
+        Transform.BaseWidth = baseWidth;
+        Transform.BaseHeight = baseHeight;
         Physics = new PhysicsBody(Transform);
         StateMachine = new StateMachine<DesktopPet>(this);
 

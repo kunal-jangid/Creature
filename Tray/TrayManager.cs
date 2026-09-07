@@ -15,7 +15,9 @@ public class TrayManager : IDisposable
     private readonly SimulationEngine _simulationEngine;
     private readonly Action _onExit;
 
+    public Action<string>? OnAddPetSpecies { get; set; }
     public Action? OnAddPet { get; set; }
+    public Action<DesktopPet>? OnRenamePet { get; set; }
     public Action<DesktopPet>? OnRemovePet { get; set; }
 
     public TrayManager(SettingsManager settingsManager, SimulationEngine simulationEngine, Action onExit)
@@ -112,11 +114,42 @@ public class TrayManager : IDisposable
 
         menu.Items.Add(new ToolStripSeparator());
 
-        var addPetItem = new ToolStripMenuItem("Add Bunny", null, (s, e) =>
+        var addPetSubMenu = new ToolStripMenuItem("Adopt Pet");
+        string[] speciesList = ["Bunny", "Gorgon", "Werewolf"];
+        foreach (var species in speciesList)
         {
-            OnAddPet?.Invoke();
-        });
-        menu.Items.Add(addPetItem);
+            var sp = species;
+            addPetSubMenu.DropDownItems.Add(new ToolStripMenuItem($"Adopt {sp}...", null, (s, e) =>
+            {
+                if (OnAddPetSpecies != null)
+                {
+                    OnAddPetSpecies(sp);
+                }
+                else
+                {
+                    OnAddPet?.Invoke();
+                }
+            }));
+        }
+        menu.Items.Add(addPetSubMenu);
+
+        var renamePetSubMenu = new ToolStripMenuItem("Rename Pet");
+        if (_simulationEngine.Pets.Count == 0)
+        {
+            renamePetSubMenu.DropDownItems.Add(new ToolStripMenuItem("No active pets") { Enabled = false });
+        }
+        else
+        {
+            foreach (var pet in _simulationEngine.Pets)
+            {
+                var targetPet = pet;
+                renamePetSubMenu.DropDownItems.Add(new ToolStripMenuItem($"{pet.Name} ({pet.Id})", null, (s, e) =>
+                {
+                    OnRenamePet?.Invoke(targetPet);
+                }));
+            }
+        }
+        menu.Items.Add(renamePetSubMenu);
 
         var removePetSubMenu = new ToolStripMenuItem("Remove Pet");
         if (_simulationEngine.Pets.Count == 0)
@@ -128,11 +161,10 @@ public class TrayManager : IDisposable
             foreach (var pet in _simulationEngine.Pets)
             {
                 var targetPet = pet;
-                var removeSpecificItem = new ToolStripMenuItem($"{pet.Name} ({pet.Id})", null, (s, e) =>
+                removePetSubMenu.DropDownItems.Add(new ToolStripMenuItem($"{pet.Name} ({pet.Id})", null, (s, e) =>
                 {
                     OnRemovePet?.Invoke(targetPet);
-                });
-                removePetSubMenu.DropDownItems.Add(removeSpecificItem);
+                }));
             }
         }
         menu.Items.Add(removePetSubMenu);

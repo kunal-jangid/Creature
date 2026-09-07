@@ -34,6 +34,19 @@ public class TrayManagerTests
             tray.OnAddPet();
             addInvoked.Should().BeTrue();
 
+            string? chosenSpecies = null;
+            tray.OnAddPetSpecies = sp => chosenSpecies = sp;
+            tray.OnAddPetSpecies("Gorgon");
+            chosenSpecies.Should().Be("Gorgon");
+
+            bool renameInvoked = false;
+            tray.OnRenamePet = p => renameInvoked = true;
+            var sm = new SpriteManager();
+            var bounds = new Rect(0, 0, 1920, 1080);
+            var bunny = new BunnyEntity("b1", sm, bounds, "Fluffy");
+            tray.OnRenamePet(bunny);
+            renameInvoked.Should().BeTrue();
+
             // Refresh menu should not throw
             tray.RefreshPetMenu();
 

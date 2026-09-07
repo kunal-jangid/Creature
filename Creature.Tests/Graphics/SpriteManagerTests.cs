@@ -90,4 +90,24 @@ public class SpriteManagerTests
 
         second.Should().BeSameAs(first);
     }
+
+    [StaFact]
+    public void LoadAnimation_WithGorgonAndWerewolf_ShouldLoad128pxFrames()
+    {
+        var sm = new SpriteManager();
+        var gorgonJson = Path.Combine(AppContext.BaseDirectory, "Assets", "Gorgon", "Idle.json");
+        var gorgonPng = Path.Combine(AppContext.BaseDirectory, "Assets", "Gorgon", "Idle-sheet.png");
+        var werewolfJson = Path.Combine(AppContext.BaseDirectory, "Assets", "Werewolf", "Idle.json");
+        var werewolfPng = Path.Combine(AppContext.BaseDirectory, "Assets", "Werewolf", "Idle-sheet.png");
+
+        var gorgonClip = sm.LoadAnimation("GorgonIdle", gorgonJson, gorgonPng);
+        gorgonClip.Frames.Length.Should().Be(7);
+        gorgonClip.Frames[0].PixelWidth.Should().Be(128);
+        gorgonClip.Frames[0].PixelHeight.Should().Be(128);
+
+        var werewolfClip = sm.LoadAnimation("WerewolfIdle", werewolfJson, werewolfPng);
+        werewolfClip.Frames.Length.Should().Be(8);
+        werewolfClip.Frames[0].PixelWidth.Should().Be(128);
+        werewolfClip.Frames[0].PixelHeight.Should().Be(128);
+    }
 }
