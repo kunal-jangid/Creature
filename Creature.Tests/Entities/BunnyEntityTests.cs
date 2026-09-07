@@ -160,8 +160,8 @@ public class BunnyEntityTests
         bunny.VisualElement.Height.Should().Be(64);
 
         var scaleTransform = bunny.VisualElement.RenderTransform.Should().BeOfType<System.Windows.Media.ScaleTransform>().Subject;
-        scaleTransform.ScaleX.Should().Be(-2.0);
-        scaleTransform.ScaleY.Should().Be(2.0);
+        scaleTransform.ScaleX.Should().Be(-1.0);
+        scaleTransform.ScaleY.Should().Be(1.0);
     }
 
     [StaFact]

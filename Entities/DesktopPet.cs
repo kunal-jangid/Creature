@@ -109,8 +109,8 @@ public abstract class DesktopPet
         VisualElement.Width = Transform.ScaledWidth;
         VisualElement.Height = Transform.ScaledHeight;
 
-        var scaleX = Transform.IsFacingLeft ? -Transform.Scale : Transform.Scale;
-        VisualElement.RenderTransform = new ScaleTransform(scaleX, Transform.Scale);
+        var scaleX = Transform.IsFacingLeft ? -1.0 : 1.0;
+        VisualElement.RenderTransform = new ScaleTransform(scaleX, 1.0);
     }
 
     public bool HitTest(Point point)
