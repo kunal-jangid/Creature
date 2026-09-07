@@ -105,3 +105,16 @@ jobs:
           git tag ${{ env.TAG_NAME }}
           git push origin ${{ env.TAG_NAME }}
           gh release create ${{ env.TAG_NAME }} "./${{ env.ZIP_NAME }}" "${{ env.INSTALLER_PATH }}" "dist/KunalJangid.cer" --title "Desktop Pets ${{ env.TAG_NAME }}" --generate-notes
+
+      - name: Submit Package Update to Windows Package Manager (Winget)
+        if: env.WINGET_TOKEN != ''
+        uses: vedantmgoyal2009/winget-releaser@v2
+        env:
+          WINGET_TOKEN: ${{ secrets.WINGET_TOKEN }}
+        with:
+          identifier: KunalJangid.DesktopPets
+          version: ${{ env.VERSION }}
+          installer-type: inno
+          release-tag: ${{ env.TAG_NAME }}
+          token: ${{ secrets.WINGET_TOKEN }}
+        continue-on-error: true

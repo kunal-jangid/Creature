@@ -162,4 +162,5 @@ powershell -ExecutionPolicy Bypass -File installer/build_installer.ps1 -Version 
 Defined in [`.github/workflows/build-release.yml`](.github/workflows/build-release.yml):
 - Manually triggerable via `workflow_dispatch`.
 - Automatically computes semantic version tags (`v1.0.0` -> `v1.1.0` -> `v2.0.0`) or accepts custom version inputs.
-- Compiles, runs full test suite, generates the Inno Setup Windows Installer (`DesktopPets-Setup-vX.X.X.exe`), packages the portable zip (`DesktopPets-win-x64-vX.X.X.zip`), Authenticode-signs the binaries with Kunal Jangid publisher credentials, and publishes both assets to GitHub Releases.
+- Compiles, runs full test suite, generates the Inno Setup Windows Installer (`DesktopPets-Setup-vX.X.X.exe`), packages the portable zip (`DesktopPets-win-x64-vX.X.X.zip`), and Authenticode-signs the binaries with Kunal Jangid publisher credentials.
+- Publishes all assets to GitHub Releases and automatically submits the package update to the official Microsoft `winget-pkgs` repository (when `WINGET_TOKEN` secret is configured).
