@@ -10,8 +10,10 @@ public class StartupManagerTests
     [Fact]
     public void SetStartup_EnableAndDisable_ShouldToggleRegistryState()
     {
+        var testExe = @"C:\Program Files\Creature\Creature.exe";
+
         // Test enabling startup
-        var enabled = StartupManager.SetStartup(true);
+        var enabled = StartupManager.SetStartup(true, testExe);
         enabled.Should().BeTrue();
         StartupManager.IsStartupEnabled().Should().BeTrue();
 

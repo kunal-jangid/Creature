@@ -9,23 +9,28 @@ public static class StartupManager
     private const string RunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private const string AppName = "Creature";
 
-    public static bool SetStartup(bool enable)
+    public static bool SetStartup(bool enable, string? customExePath = null)
     {
         try
         {
-            using var key = Registry.CurrentUser.OpenSubKey(RunKeyPath, writable: true);
-            if (key == null) return false;
-
             if (enable)
             {
-                var exePath = Environment.ProcessPath;
+                var exePath = customExePath ?? Environment.ProcessPath;
                 if (string.IsNullOrEmpty(exePath))
                 {
                     exePath = Process.GetCurrentProcess().MainModule?.FileName;
                 }
 
+                if (string.IsNullOrEmpty(exePath))
+                {
+                    exePath = AppContext.BaseDirectory;
+                }
+
                 if (!string.IsNullOrEmpty(exePath))
                 {
+                    using var key = Registry.CurrentUser.CreateSubKey(RunKeyPath);
+                    if (key == null) return false;
+
                     key.SetValue(AppName, $"\"{exePath}\"");
                     return true;
                 }
@@ -33,7 +38,8 @@ public static class StartupManager
             }
             else
             {
-                key.DeleteValue(AppName, throwOnMissingValue: false);
+                using var key = Registry.CurrentUser.CreateSubKey(RunKeyPath);
+                key?.DeleteValue(AppName, throwOnMissingValue: false);
                 return true;
             }
         }
