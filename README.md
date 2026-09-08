@@ -6,6 +6,7 @@
 
 <p align="center">
   <b>Lightweight, interactive pixel-art companions for your Windows desktop.</b>
+  <img src="Assets/readmeShowcase.gif" alt="Desktop Pets" />
 </p>
 
 ---
@@ -16,18 +17,18 @@ Desktop Pets lets cute animated virtual pets (Bunny, Gorgon, Werewolf) roam alon
 
 ## 🚀 Installation
 
-### Option 1: Via Windows Package Manager (Winget)
-```bash
-winget install KunalJangid.DesktopPets
-```
-
-### Option 2: 1-Click Installer (GitHub Releases)
+### Option 1: 1-Click Installer (GitHub Releases)
 1. Go to **[Releases](https://github.com/kunal-jangid/Creature/releases)**.
 2. Download and run **`DesktopPets-Setup-vX.X.X.exe`**.
 
-### Option 3: Portable ZIP
+### Option 2: Portable ZIP
 Download **`DesktopPets-win-x64-vX.X.X.zip`** from [Releases](https://github.com/kunal-jangid/Creature/releases), extract it anywhere, and launch **`DesktopPets.exe`**.
 
+
+### Option 3 (Coming Soon): Via Windows Package Manager (Winget)
+```bash
+winget install KunalJangid.DesktopPets
+```
 > **Note on Windows SmartScreen:** On first run, Windows may show an *"Unrecognized app"* prompt. Click **More info** $\rightarrow$ **Run anyway** to proceed.
 
 ---
