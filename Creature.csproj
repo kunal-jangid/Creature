@@ -25,10 +25,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Assets\**\*.*">
+    <None Include="Assets\**\*.*" Exclude="Assets\*.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
+
+  <Target Name="CopyAssetsToOutput" AfterTargets="Build;Publish">
+    <ItemGroup>
+      <_AssetFiles Include="Assets\**\*.*" Exclude="Assets\*.gif" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_AssetFiles)" DestinationFiles="@(_AssetFiles->'$(TargetDir)Assets\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_AssetFiles)" DestinationFiles="@(_AssetFiles->'$(PublishDir)Assets\%(RecursiveDir)%(Filename)%(Extension)')" Condition="'$(PublishDir)' != ''" SkipUnchangedFiles="true" />
+  </Target>
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
