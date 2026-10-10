@@ -44,6 +44,8 @@ public class SettingsManagerTests
             settings.IsPaused = true;
             settings.Pets.Add(new PetProfile { Id = "bunny-1", Name = "Fluffy", Species = "Bunny" });
             settings.DisabledPetIds.Add("fox");
+            settings.AutoCheckUpdates = true;
+            settings.LastUpdateCheckUtc = new DateTime(2026, 10, 10, 12, 0, 0, DateTimeKind.Utc);
             manager.Save(settings);
 
             var loaded = manager.Load();
@@ -54,6 +56,8 @@ public class SettingsManagerTests
             loaded.Pets.Should().HaveCount(1);
             loaded.Pets[0].Name.Should().Be("Fluffy");
             loaded.DisabledPetIds.Should().Contain("fox");
+            loaded.AutoCheckUpdates.Should().BeTrue();
+            loaded.LastUpdateCheckUtc.Should().Be(new DateTime(2026, 10, 10, 12, 0, 0, DateTimeKind.Utc));
         }
         finally
         {

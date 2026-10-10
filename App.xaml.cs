@@ -26,6 +26,7 @@ public partial class App : System.Windows.Application
     private SettingsManager? _settingsManager;
     private SimulationEngine? _simulationEngine;
     private TrayManager? _trayManager;
+    private UpdateManager? _updateManager;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -75,12 +76,24 @@ public partial class App : System.Windows.Application
             }
         }
 
+        _updateManager = new UpdateManager();
+
         _trayManager = new TrayManager(_settingsManager, _simulationEngine, () => Shutdown())
         {
             OnAddPetSpecies = AddPetWithPrompt,
             OnRenamePet = RenamePetWithPrompt,
-            OnRemovePet = RemovePet
+            OnRemovePet = RemovePet,
+            OnCheckForUpdates = HandleManualUpdateCheckAsync
         };
+
+        if (_settingsManager.CurrentSettings.AutoCheckUpdates)
+        {
+            _updateManager.StartPeriodicChecks(
+                TimeSpan.FromSeconds(10),
+                TimeSpan.FromHours(24),
+                PromptUpdateAvailable);
+        }
+
         _simulationEngine.Start();
     }
 
@@ -253,6 +266,66 @@ public partial class App : System.Windows.Application
         }
     }
 
+    private async Task HandleManualUpdateCheckAsync()
+    {
+        if (_updateManager == null) return;
+
+        var result = await _updateManager.CheckForUpdatesAsync();
+        if (_settingsManager != null)
+        {
+            var settings = _settingsManager.CurrentSettings;
+            settings.LastUpdateCheckUtc = DateTime.UtcNow;
+            _settingsManager.Save(settings);
+        }
+
+        if (result.ErrorMessage != null)
+        {
+            System.Windows.MessageBox.Show(
+                $"Could not check for updates:\n{result.ErrorMessage}\n\nPlease check your internet connection.",
+                "Check for Updates",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            return;
+        }
+
+        if (result.IsUpdateAvailable)
+        {
+            PromptUpdateAvailable(result);
+        }
+        else
+        {
+            var versionText = result.CurrentVersion.ToString(3);
+            System.Windows.MessageBox.Show(
+                $"You are running the latest version of Desktop Pets (v{versionText}).",
+                "Check for Updates",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+    }
+
+    private void PromptUpdateAvailable(UpdateCheckResult result)
+    {
+        Dispatcher.Invoke(async () =>
+        {
+            var versionStr = result.LatestVersion != null ? result.LatestVersion.ToString(3) : "new";
+            var message = $"A new version of Desktop Pets (v{versionStr}) is available!\n\n" +
+                          $"Current version: v{result.CurrentVersion.ToString(3)}\n\n" +
+                          (string.IsNullOrWhiteSpace(result.ReleaseNotes) ? "" : $"Release Notes:\n{result.ReleaseNotes}\n\n") +
+                          "Would you like to install the update now?";
+
+            var choice = System.Windows.MessageBox.Show(
+                message,
+                "Desktop Pets - Update Available",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Information);
+
+            if (choice == MessageBoxResult.Yes && _updateManager != null)
+            {
+                await _updateManager.ApplyUpdateAsync(result.ReleaseUrl);
+            }
+        });
+    }
+
     protected override void OnExit(ExitEventArgs e)
     {
         if (_singleInstanceMutex != null)
@@ -266,6 +339,7 @@ public partial class App : System.Windows.Application
             _singleInstanceMutex = null;
         }
 
+        _updateManager?.Dispose();
         _simulationEngine?.Stop();
         _trayManager?.Dispose();
         _overlayManager?.Dispose();

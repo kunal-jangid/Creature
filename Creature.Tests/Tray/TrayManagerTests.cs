@@ -47,6 +47,15 @@ public class TrayManagerTests
             tray.OnRenamePet(bunny);
             renameInvoked.Should().BeTrue();
 
+            bool updateInvoked = false;
+            tray.OnCheckForUpdates = () =>
+            {
+                updateInvoked = true;
+                return System.Threading.Tasks.Task.CompletedTask;
+            };
+            tray.OnCheckForUpdates();
+            updateInvoked.Should().BeTrue();
+
             // Refresh menu should not throw
             tray.RefreshPetMenu();
 
