@@ -29,7 +29,16 @@ public class TrayManager : IDisposable
         _onExit = onExit;
 
         var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "app.ico");
-        Icon icon = File.Exists(iconPath) ? new Icon(iconPath) : SystemIcons.Application;
+        Icon icon;
+        if (File.Exists(iconPath))
+        {
+            icon = new Icon(iconPath);
+        }
+        else
+        {
+            var exePath = Environment.ProcessPath;
+            icon = (!string.IsNullOrEmpty(exePath) ? Icon.ExtractAssociatedIcon(exePath) : null) ?? SystemIcons.Application;
+        }
 
         _notifyIcon = new NotifyIcon
         {

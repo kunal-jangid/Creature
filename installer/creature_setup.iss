@@ -37,8 +37,8 @@ Name: "autostart"; Description: "Start Desktop Pets automatically when Windows s
 Source: "..\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{autoprograms}\Desktop Pets"; Filename: "{app}\DesktopPets.exe"; WorkingDir: "{app}"; IconFilename: "{app}\Assets\app.ico"
-Name: "{autodesktop}\Desktop Pets"; Filename: "{app}\DesktopPets.exe"; WorkingDir: "{app}"; IconFilename: "{app}\Assets\app.ico"; Tasks: desktopicon
+Name: "{autoprograms}\Desktop Pets"; Filename: "{app}\DesktopPets.exe"; WorkingDir: "{app}"; IconFilename: "{app}\DesktopPets.exe"
+Name: "{autodesktop}\Desktop Pets"; Filename: "{app}\DesktopPets.exe"; WorkingDir: "{app}"; IconFilename: "{app}\DesktopPets.exe"; Tasks: desktopicon
 
 [Registry]
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "Desktop Pets"; ValueData: """{app}\DesktopPets.exe"""; Flags: uninsdeletevalue; Tasks: autostart

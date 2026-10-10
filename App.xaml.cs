@@ -211,28 +211,45 @@ public partial class App : System.Windows.Application
     private void LoadAssets()
     {
         var baseDir = Path.Combine(AppContext.BaseDirectory, "Assets");
+        if (!Directory.Exists(baseDir))
+        {
+            System.Windows.MessageBox.Show(
+                $"Assets directory not found at:\n{baseDir}\n\nPlease reinstall Desktop Pets or verify your installation.",
+                "Desktop Pets - Missing Assets",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            return;
+        }
 
         // Bunny
-        _spriteManager!.LoadAnimation("BunnyLieDown", Path.Combine(baseDir, "BunnyLieDown.json"), Path.Combine(baseDir, "BunnyLieDown.png"));
-        _spriteManager!.LoadAnimation("BunnyRun", Path.Combine(baseDir, "BunnyRun.json"), Path.Combine(baseDir, "BunnyRun.png"));
-        _spriteManager!.LoadAnimation("BunnyJump", Path.Combine(baseDir, "BunnyJump.json"), Path.Combine(baseDir, "BunnyJump.png"), loop: false);
+        LoadSafe("BunnyLieDown", Path.Combine(baseDir, "BunnyLieDown.json"), Path.Combine(baseDir, "BunnyLieDown.png"));
+        LoadSafe("BunnyRun", Path.Combine(baseDir, "BunnyRun.json"), Path.Combine(baseDir, "BunnyRun.png"));
+        LoadSafe("BunnyJump", Path.Combine(baseDir, "BunnyJump.json"), Path.Combine(baseDir, "BunnyJump.png"), loop: false);
 
         // Gorgon
         var gorgonDir = Path.Combine(baseDir, "Gorgon");
         if (Directory.Exists(gorgonDir))
         {
-            _spriteManager.LoadAnimation("GorgonIdle", Path.Combine(gorgonDir, "Idle.json"), Path.Combine(gorgonDir, "Idle-sheet.png"));
-            _spriteManager.LoadAnimation("GorgonRun", Path.Combine(gorgonDir, "Run.json"), Path.Combine(gorgonDir, "Run-sheet.png"));
-            _spriteManager.LoadAnimation("GorgonSpecial", Path.Combine(gorgonDir, "Special.json"), Path.Combine(gorgonDir, "Special-sheet.png"), loop: false);
+            LoadSafe("GorgonIdle", Path.Combine(gorgonDir, "Idle.json"), Path.Combine(gorgonDir, "Idle-sheet.png"));
+            LoadSafe("GorgonRun", Path.Combine(gorgonDir, "Run.json"), Path.Combine(gorgonDir, "Run-sheet.png"));
+            LoadSafe("GorgonSpecial", Path.Combine(gorgonDir, "Special.json"), Path.Combine(gorgonDir, "Special-sheet.png"), loop: false);
         }
 
         // Werewolf
         var werewolfDir = Path.Combine(baseDir, "Werewolf");
         if (Directory.Exists(werewolfDir))
         {
-            _spriteManager.LoadAnimation("WerewolfIdle", Path.Combine(werewolfDir, "Idle.json"), Path.Combine(werewolfDir, "Idle-sheet.png"));
-            _spriteManager.LoadAnimation("WerewolfRun", Path.Combine(werewolfDir, "Run.json"), Path.Combine(werewolfDir, "Run-sheet.png"));
-            _spriteManager.LoadAnimation("WerewolfFlinch", Path.Combine(werewolfDir, "Dead.json"), Path.Combine(werewolfDir, "Dead-sheet.png"), loop: false);
+            LoadSafe("WerewolfIdle", Path.Combine(werewolfDir, "Idle.json"), Path.Combine(werewolfDir, "Idle-sheet.png"));
+            LoadSafe("WerewolfRun", Path.Combine(werewolfDir, "Run.json"), Path.Combine(werewolfDir, "Run-sheet.png"));
+            LoadSafe("WerewolfFlinch", Path.Combine(werewolfDir, "Dead.json"), Path.Combine(werewolfDir, "Dead-sheet.png"), loop: false);
+        }
+    }
+
+    private void LoadSafe(string name, string jsonPath, string pngPath, bool loop = true)
+    {
+        if (File.Exists(jsonPath) && File.Exists(pngPath))
+        {
+            _spriteManager?.LoadAnimation(name, jsonPath, pngPath, loop);
         }
     }
 
