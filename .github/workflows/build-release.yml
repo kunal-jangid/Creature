@@ -7,6 +7,11 @@ on:
         description: "Release Version (e.g. 1.1, 2.0). Leave empty to auto-increment from previous release"
         required: false
         default: ""
+      publish_winget:
+        description: "Publish update to Windows Package Manager (Winget)"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -107,7 +112,7 @@ jobs:
           gh release create ${{ env.TAG_NAME }} "./${{ env.ZIP_NAME }}" "${{ env.INSTALLER_PATH }}" "dist/KunalJangid.cer" --title "Desktop Pets ${{ env.TAG_NAME }}" --generate-notes
 
       - name: Submit Package Update to Windows Package Manager (Winget)
-        if: env.WINGET_TOKEN != ''
+        if: ${{ (inputs.publish_winget == true || github.event.inputs.publish_winget == 'true') && env.WINGET_TOKEN != '' }}
         uses: vedantmgoyal2009/winget-releaser@v2
         env:
           WINGET_TOKEN: ${{ secrets.WINGET_TOKEN }}
