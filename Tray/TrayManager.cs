@@ -21,6 +21,7 @@ public class TrayManager : IDisposable
     public Action? OnAddPet { get; set; }
     public Action<DesktopPet>? OnRenamePet { get; set; }
     public Action<DesktopPet>? OnRemovePet { get; set; }
+    public Func<Task>? OnCheckForUpdates { get; set; }
 
     public TrayManager(SettingsManager settingsManager, SimulationEngine simulationEngine, Action onExit)
     {
@@ -190,6 +191,17 @@ public class TrayManager : IDisposable
             }
         }
         menu.Items.Add(removePetSubMenu);
+
+        menu.Items.Add(new ToolStripSeparator());
+
+        var updateItem = new ToolStripMenuItem("Check for Updates...", null, async (s, e) =>
+        {
+            if (OnCheckForUpdates != null)
+            {
+                await OnCheckForUpdates();
+            }
+        });
+        menu.Items.Add(updateItem);
 
         menu.Items.Add(new ToolStripSeparator());
 

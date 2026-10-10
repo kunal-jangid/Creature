@@ -10,4 +10,6 @@ public class UserSettings
     public bool IsPaused { get; set; } = false;
     public List<PetProfile> Pets { get; set; } = new();
     public List<string> DisabledPetIds { get; set; } = new();
+    public bool AutoCheckUpdates { get; set; } = true;
+    public System.DateTime? LastUpdateCheckUtc { get; set; }
 }
